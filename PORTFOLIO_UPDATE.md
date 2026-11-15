@@ -15,3 +15,7 @@ The modeling choices, parameter grids and saved result figures are retained. The
 All three packaged notebooks were executed locally from start to finish. [Reproduction results](results/reproduction-check.json) record the observed values; [source comparison](results/source-comparison.json) records original file hashes and changed source cells. These checks reuse the course data and splits and are not independent validation experiments.
 
 The repository was forked from [sbesby/ai4cm](https://github.com/sbesby/ai4cm). The inherited `setup/`, `quick-guide/`, editor configuration and `AGENTS.md` remain course scaffolding. The 15 November publication does not change that upstream repository or establish when the original coursework was written.
+
+## Environment scope
+
+The notebooks use paths relative to the repository root and the `ai4cm-env` kernel. Part 3 uses one training worker to limit memory consumption. The environment file describes the local analysis environment; a fresh environment solve has not been verified on every platform. Saved coursework figures remain the source for the README illustrations.
