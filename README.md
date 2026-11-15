@@ -1,141 +1,70 @@
-# AI4CM - Artificial Intelligence for Communication and Marketing
+# Customer segmentation, churn and lifetime value
 
-Welcome to the **AI4CM** exercises repository. This project contains the necessary tools and environments for the exercises. You can use this project to perform the exercises with a pre-configured environment.
+Three studies of customer behavior, developed for Artificial Intelligence for Communication and Marketing. The work moves from descriptive segmentation to churn prediction and then to forecasting customer value on sparse transaction histories.
 
-## 📥 How to get the project
+| Study | Main question | Files |
+| :--- | :--- | :--- |
+| Segmentation | Do RFM rules and clustering identify the same customers? | [Notebook](01-segmentation/analysis.ipynb) · [Slides](01-segmentation/slides.pdf) |
+| Churn | Which customers are most likely to leave, and how does the contact budget change the choice? | [Notebook](02-churn/analysis.ipynb) · [Slides](02-churn/slides.pdf) |
+| Customer value | How useful are lifetime-value models when almost everyone buys once? | [Notebook](03-customer-value/analysis.ipynb) · [Slides](03-customer-value/slides.pdf) |
 
-You can get the code in several ways:
+## 1. RFM and behavioral clustering
 
-1. **Fork the repository**: Click the **"Fork"** button at the top right to create your own copy of the project (you must have a GitHub account).
-2. **Clone the repository**: If you have Git installed, follow our [Git Quick Guide](quick-guide/git.md).
-3. **Download ZIP**: Click the green **"Code"** button at the top right and select **"Download ZIP"**.
+The first study audits 2,240 customer records, removes duplicate profiles and prepares a 2,057-customer analysis set. It compares additive and pattern-based RFM segments with K-means on recency, purchase frequency and log-transformed spending. Silhouette checks and alternative cleaning choices help distinguish stable structure from artifacts of the preprocessing.
 
-## 🚀 1. Software Installation (Mamba)
+![Overlap between K-means customer groups and RFM segments](assets/rfm-cluster-overlap.png)
 
-**Mamba** is an ultra-fast package manager. We recommend installing **Miniforge**, which includes Mamba.
+The practical output is a set of segment-specific communication proposals. These are recommendations derived from observed behavior, not measured campaign effects.
 
-### 🍎 macOS
+## 2. Churn prediction
 
-You can install **Miniforge** using [Homebrew](https://brew.sh/) or the manual script:
+Logistic regression, random forest and XGBoost are compared using stratified splits and training-fold preprocessing. Removing 556 duplicate profiles before splitting prevents identical customer records from appearing on both sides of the evaluation.
 
-**Option A: via Homebrew**
+| XGBoost configuration | Recall | F1 | ROC AUC |
+| :--- | ---: | ---: | ---: |
+| Baseline used in the contact-policy analysis | 0.929 | 0.876 | 0.985 |
+| Tuned with randomized search | 0.911 | 0.916 | 0.990 |
 
-Open a terminal and run the following command:
+The test set contains 1,015 customers, including 168 churners. Tuning improves precision and F1 while lowering recall. The notebook retains the baseline for its stated recall priority. Because model comparisons and that decision use the same test set, an independent temporal evaluation would be needed before deployment.
 
-```bash
-brew install --cask miniforge
-```
+![ROC curves and cumulative gains from the saved churn notebook](assets/churn-roc-gains.png)
 
-**Option B: via Script**
+## 3. Customer value on Olist
 
-Open a terminal and run the following command:
+The final study audits nine related tables and builds 96,211 delivered transactions for 93,104 customers. It compares BG/NBD plus Gamma-Gamma with random forest and two XGBoost objectives over a 90-day holdout.
 
-```bash
-curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh"
-bash Miniforge3-MacOSX-arm64.sh
-```
+Only **81 of 15,027 test customers** have non-zero holdout spending. This makes a zero predictor a necessary baseline:
 
-_(If you are using an Intel-based Mac, download `Miniforge3-MacOSX-x86_64.sh` in Option B)_
+| Model | MAE, R$ | RMSE, R$ |
+| :--- | ---: | ---: |
+| Predict zero | **0.72** | 13.72 |
+| Random forest | 0.75 | 13.72 |
+| XGBoost, squared error | 0.75 | 13.72 |
+| XGBoost, Tweedie | 1.41 | **13.70** |
+| BG/NBD + Gamma-Gamma | 2.56 | 13.94 |
 
-### 🪟 Windows
+Tweedie's aggregate forecast is close to the observed holdout GMV (about R$10.6k versus R$10.9k), but the individual error improvement is small. The full-base BTYD forecast depends heavily on one-time buyers: about 91.2% of its forecast value comes from that group. The notebook therefore separates forecasting assumptions, customer ranking and hypothetical campaign economics. No incremental campaign revenue or causal uplift was measured.
 
-1. Download [Miniforge3-Windows-x86_64.exe](https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Windows-x86_64.exe).
-2. Run the installer and follow the wizard.
+## Run
 
-### 🐧 Linux
-
-Open a terminal and run the following command:
-
-```bash
-curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh"
-bash Miniforge3-Linux-x86_64.sh
-```
-
-## 🛠️ 2. Environment Configuration
-
-Once Mamba is installed, open your terminal and move to the project folder - the one containing the `environment.yml` file - and create the environment:
-
-_(see our [Terminal Quick Guide](quick-guide/terminal.md) if you need help moving to the project folder in the terminal)_
+Obtain the inputs using [data/README.md](data/README.md), then:
 
 ```bash
+git clone https://github.com/pdmdp/ai4cm.git
+cd ai4cm
 mamba env create -f environment.yml
+mamba run -n ai4cm-env python scripts/check_data.py
+mamba run -n ai4cm-env jupyter lab
 ```
 
-> [!NOTE]
-> **Windows users**: Run these commands using the **Miniforge Prompt** (which you can find in the Start Menu) to ensure `mamba` is recognized correctly.
+Open one of the three `analysis.ipynb` files with the `ai4cm-env` kernel and run cells in order. The notebooks locate data relative to the repository root. Part 3 uses one training worker to limit memory use. The environment file describes the local analysis environment; a fresh environment solve has not been verified on every platform.
 
-## 📓 3. Notebook Configuration
+All three packaged notebooks were executed from start to finish on 15 November 2026 using the recorded local inputs. The checks reproduced the segmentation sample size, churn metrics and customer-value comparison shown here. [Execution results](results/reproduction-check.json) record the observed values.
 
-We recommend using [VS Code](https://code.visualstudio.com/) (or [Antigravity](https://antigravity.google/)) for the best coding experience. These editors provide seamless integration with Jupyter notebooks and the project's environment.
+The notebooks retain the final coursework outputs. README figures are extracted from those outputs. The November 2026 packaging update fixes paths, records input checksums and qualifies unsupported generalization claims. Numerical tables above describe the recorded runs.
 
-To work with Jupyter notebooks (`.ipynb`):
+## Author and course material
 
-1. **Open the project folder**: Open the root folder of the project (where the `environment.yml` file is located) in your editor.
+**Matteo Pietro Di Pilato** · BSc in Artificial Intelligence.
 
-   > [!IMPORTANT]
-   > The project includes a `.vscode` folder with recommended settings. When you open the folder, VS Code will ask if you want to install the **recommended extensions** (Python, Jupyter, etc.). Click **"Install"** to ensure everything works correctly.
-
-2. **Open a notebook**: Open a file like `setup/test_notebook.ipynb`.
-
-3. **Kernel Selection**: In the top right corner, click on **"Select Kernel"** (or the displayed Python version) and select the **`ai4cm-env`** environment.
-
-> [!TIP]
-> If the environment does not appear, make sure you have correctly selected the Python interpreter by pressing `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows), typing **`Python: Select Interpreter`**, and choosing the entry labeled **`ai4cm-env`**. If you still don't see it, try restarting VS Code.
-
-## 📚 Appendix
-
-### Running Python Scripts
-
-To run Python scripts from the terminal, you need to ensure your shell is initialized and the environment is active.
-
-#### 1. Shell Initialization (First time only)
-
-Initialize your shell:
-
-- **macOS/Linux**:
-  ```bash
-  mamba shell init --shell zsh  # or bash
-  source ~/.zshrc              # or ~/.bashrc
-  ```
-- **Windows**:
-  We recommend using the **Miniforge Prompt** (search for it in the Start Menu).
-  Alternatively, to use standard PowerShell, initialize it once:
-  ```powershell
-  mamba shell init powershell
-  # Then restart your terminal
-  ```
-
-#### 2. Environment Activation
-
-Before running a script, activate the project environment:
-
-```ba sh
-mamba activate ai4cm-env
-```
-
-#### 3. Execution
-
-Once the environment is active, you can run your scripts:
-
-```bash
-python setup/test_script.py
-```
-
----
-
-### Direct Command Execution
-
-If you want to run a command directly without activating the environment first, use `mamba run`:
-
-```bash
-mamba run -n ai4cm-env python setup/test_script.py
-```
-
-### Basic Mamba Commands
-
-| Action                   | Command                                       |
-| :----------------------- | :-------------------------------------------- |
-| **Activate environment** | `mamba activate ai4cm-env`                    |
-| **Update environment**   | `mamba env update -f environment.yml --prune` |
-| **List environments**    | `mamba env list`                              |
-| **Remove environment**   | `mamba env remove -n ai4cm-env`               |
+The three project notebooks and their presentations are the final individual course submission. The repository also retains the earlier course environment checks in `setup/` and introductory notes in `quick-guide/`.

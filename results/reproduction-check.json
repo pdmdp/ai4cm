@@ -1,0 +1,106 @@
+{
+  "date": "2026-11-15",
+  "python": "3.14.4",
+  "source": "All packaged notebook code cells executed sequentially using the inputs in data/manifest.json. Saved notebook outputs remain the course submission outputs.",
+  "runs": [
+    {
+      "part": "01-segmentation",
+      "seconds": 6.3323837500065565,
+      "status": "executed",
+      "clean_rows": 2057
+    },
+    {
+      "part": "02-churn",
+      "seconds": 32.00028995797038,
+      "status": "executed",
+      "test_rows": 1015,
+      "churners": 168,
+      "model_metrics": {
+        "Logistic Regression": {
+          "Train F1": 0.6134048257372654,
+          "Accuracy": 0.8049261083743843,
+          "Precision": 0.45,
+          "Recall": 0.8035714285714286,
+          "F1": 0.5769230769230769,
+          "ROC-AUC": 0.8793079215157138,
+          "Top-10% Lift": 4.486386138613861
+        },
+        "Random Forest": {
+          "Train F1": 0.8450899031811895,
+          "Accuracy": 0.9054187192118227,
+          "Precision": 0.6875,
+          "Recall": 0.7857142857142857,
+          "F1": 0.7333333333333333,
+          "ROC-AUC": 0.9508067689885872,
+          "Top-10% Lift": 5.383663366336634
+        },
+        "XGBoost": {
+          "Train F1": 0.9580071174377224,
+          "Accuracy": 0.9566502463054187,
+          "Precision": 0.8297872340425532,
+          "Recall": 0.9285714285714286,
+          "F1": 0.8764044943820225,
+          "ROC-AUC": 0.9849187608927868,
+          "Top-10% Lift": 6.041666666666667
+        }
+      }
+    },
+    {
+      "part": "03-customer-value",
+      "seconds": 74.62986458302476,
+      "status": "executed",
+      "comparison": {
+        "BTYD (BG/NBD + Gamma-Gamma)": {
+          "MAE": 2.5569735826808055,
+          "MSE": 194.43495771850883,
+          "RMSE": 13.943993607231352
+        },
+        "Random Forest (sq.err)": {
+          "MAE": 0.7497297269291292,
+          "MSE": 188.17865953815576,
+          "RMSE": 13.717822696702118
+        },
+        "XGBoost (sq.err)": {
+          "MAE": 0.7494995869055255,
+          "MSE": 188.19889882837083,
+          "RMSE": 13.718560377400058
+        },
+        "XGBoost (Tweedie)": {
+          "MAE": 1.4130667079445225,
+          "MSE": 187.67494755351146,
+          "RMSE": 13.69945062962422
+        },
+        "Naive (predict 0)": {
+          "MAE": 0.7230485126771811,
+          "MSE": 188.25377899114923,
+          "RMSE": 13.720560447414282
+        }
+      },
+      "test_rows": 15027,
+      "nonzero_test": 81,
+      "aggregate": [
+        {
+          "model": "Actual holdout",
+          "holdout_gmv": 10865.25,
+          "vs_actual": 1.0,
+          "gmv_label": "R$10,865",
+          "vs_actual_label": "1.00x"
+        },
+        {
+          "model": "BTYD (BG/NBD + Gamma-Gamma)",
+          "holdout_gmv": 28180.566041265105,
+          "vs_actual": 2.593641751571764,
+          "gmv_label": "R$28,181",
+          "vs_actual_label": "2.59x"
+        },
+        {
+          "model": "XGBoost (Tweedie)",
+          "holdout_gmv": 10623.9755859375,
+          "vs_actual": 0.9777939380996755,
+          "gmv_label": "R$10,624",
+          "vs_actual_label": "0.98x"
+        }
+      ]
+    }
+  ]
+}

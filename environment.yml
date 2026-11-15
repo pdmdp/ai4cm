@@ -3,10 +3,17 @@ channels:
   - conda-forge
 dependencies:
   - python=3.14
-  - numpy
-  - pandas
-  - matplotlib
-  - scikit-learn
+  - numpy=2.4
+  - pandas=3.0
+  - scipy=1.17
+  - matplotlib=3.10
+  - scikit-learn=1.8
+  - seaborn=0.13
+  - xgboost=3.2
+  - openpyxl=3.1
   - ipykernel
+  - jupyterlab
   - duckdb
-  - seaborn
+  - pip
+  - pip:
+      - lifetimes==0.11.3

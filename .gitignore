@@ -1,3 +1,9 @@
-# IDE
-.idea
+__pycache__/
+.ipynb_checkpoints/
+.venv/
 .DS_Store
+outputs/
+data/rfm/
+data/churn/
+data/olist/
+.env
