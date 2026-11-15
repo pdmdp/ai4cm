@@ -1,6 +1,6 @@
 # Customer segmentation, churn and lifetime value
 
-Three studies of customer behavior, developed for Artificial Intelligence for Communication and Marketing. The work moves from descriptive segmentation to churn prediction and then to forecasting customer value on sparse transaction histories.
+Three studies of customer behavior, developed for Artificial Intelligence for Communication and Marketing. 
 
 | Study | Main question | Files |
 | :--- | :--- | :--- |
@@ -14,7 +14,7 @@ The first study audits 2,240 customer records, removes duplicate profiles and pr
 
 ![Overlap between K-means customer groups and RFM segments](assets/rfm-cluster-overlap.png)
 
-The practical output is a set of segment-specific communication proposals. These are recommendations derived from observed behavior, not measured campaign effects.
+The segment-specific communication proposals have not been tested in a campaign.
 
 ## 2. Churn prediction
 
@@ -43,7 +43,7 @@ Only **81 of 15,027 test customers** have non-zero holdout spending. This makes 
 | XGBoost, Tweedie | 1.41 | **13.70** |
 | BG/NBD + Gamma-Gamma | 2.56 | 13.94 |
 
-Tweedie's aggregate forecast is close to the observed holdout GMV (about R$10.6k versus R$10.9k), but the individual error improvement is small. The full-base BTYD forecast depends heavily on one-time buyers: about 91.2% of its forecast value comes from that group. The notebook therefore separates forecasting assumptions, customer ranking and hypothetical campaign economics. No incremental campaign revenue or causal uplift was measured.
+Tweedie's aggregate forecast is close to the observed holdout GMV (about R$10.6k versus R$10.9k), but the individual error improvement is small. The full-base BTYD forecast depends heavily on one-time buyers: about 91.2% of its forecast value comes from that group. Campaign economics are hypothetical; no causal uplift was measured.
 
 ## Run
 
@@ -61,10 +61,10 @@ Open one of the three `analysis.ipynb` files with the `ai4cm-env` kernel and run
 
 All three packaged notebooks were executed from start to finish on 15 November 2026 using the recorded local inputs. The checks reproduced the segmentation sample size, churn metrics and customer-value comparison shown here. [Execution results](results/reproduction-check.json) record the observed values.
 
-The notebooks retain the final coursework outputs. README figures are extracted from those outputs. The November 2026 packaging update fixes paths, records input checksums and qualifies unsupported generalization claims. Numerical tables above describe the recorded runs.
+README figures and saved notebook outputs come from the final coursework. [The portfolio update](PORTFOLIO_UPDATE.md) records the later changes and verification.
 
 ## Author and course material
 
 **Matteo Pietro Di Pilato** · BSc in Artificial Intelligence.
 
-The three project notebooks and their presentations are the final individual course submission. The repository also retains the earlier course environment checks in `setup/` and introductory notes in `quick-guide/`.
+The notebooks are adapted from my final individual submission; the presentations are unchanged. This repository began as a fork of the [course setup repository](https://github.com/sbesby/ai4cm). Its environment checks, introductory guides and `AGENTS.md` are inherited course material. The project directories and the portfolio updates are my additions.

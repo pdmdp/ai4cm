@@ -1,0 +1,58 @@
+[
+  {
+    "source_filename": "Part1_Notebook.ipynb",
+    "source_sha256": "27db00fbbdb64edb8316fb206c0e4d9be6a781b0c0b19cf9920c9e69bb9f4faa",
+    "published_path": "01-segmentation/analysis.ipynb",
+    "published_sha256": "99ff702cd7077f018d2bd04c4c8305bf29bebb2a66d5c99cb0b00ff4fdb2a411",
+    "changed_source_cells": [
+      {
+        "original_cell_index": 1,
+        "type": "code"
+      },
+      {
+        "original_cell_index": 3,
+        "type": "code"
+      }
+    ]
+  },
+  {
+    "source_filename": "Part2_Notebook.ipynb",
+    "source_sha256": "e374efa3fe1746e933cd3d69c550c27f92bbd5d49fdaef7d1f4aafedc7f87dc7",
+    "published_path": "02-churn/analysis.ipynb",
+    "published_sha256": "5f86b8d5d7b8f1ee9675f4c8201c80a618966001d996992b5571c2e17b0fdbe1",
+    "changed_source_cells": [
+      {
+        "original_cell_index": 3,
+        "type": "code"
+      },
+      {
+        "original_cell_index": 35,
+        "type": "markdown"
+      },
+      {
+        "original_cell_index": 46,
+        "type": "markdown"
+      }
+    ]
+  },
+  {
+    "source_filename": "Part3_Notebook.ipynb",
+    "source_sha256": "42dede97e8e52d2379d742e915a5f6093098833c37dbe50ebf8433c38bf0d217",
+    "published_path": "03-customer-value/analysis.ipynb",
+    "published_sha256": "48810634f8e320bf289e4cedbfb8b6a15d2baac5ff5ef2558ad82b76fdc0767c",
+    "changed_source_cells": [
+      {
+        "original_cell_index": 1,
+        "type": "code"
+      },
+      {
+        "original_cell_index": 30,
+        "type": "markdown"
+      },
+      {
+        "original_cell_index": 31,
+        "type": "code"
+      }
+    ]
+  }
+]
